@@ -14,3 +14,13 @@ class BaseMultiview:
             A[:,:,i] = S[i]
 
         return A
+    
+    def __repr__(self):
+        if hasattr(self,'method'):
+            add = ' ' + str(self.method)
+        else :
+            add = ''
+        return str(self.__class__.__name__)+ add
+    
+    def __str__(self):
+        return self.__repr__()
