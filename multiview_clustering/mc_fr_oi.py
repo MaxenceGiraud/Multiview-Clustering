@@ -54,8 +54,7 @@ class MC_FR_OI(BaseMultiview):
             U = la.svd(A_unfold1 @ (la.kron(V,W)))[0][:,:self.m]
             V = la.svd(A_unfold2 @ (la.kron(U_old,W)))[0][:,:self.m]
 
-            # print(la.norm(U-U_old))
-            if la.norm(U-U_old) < 1e-10 :
+            if la.norm(U-U_old) < 1e-12 :
                 break
                 
         # Normalize rows of U

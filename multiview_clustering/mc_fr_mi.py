@@ -38,7 +38,6 @@ class MC_FR_MI(BaseMultiview):
         V = la.svd(A_unfold2,full_matrices=False)[0][:,:self.m]
         W = la.svd(A_unfold3,full_matrices=False)[0][:,0].reshape(-1,1)
 
-        # print(W.shape)
 
         ## HOOI
         for _ in range(self.max_iter):
@@ -48,14 +47,11 @@ class MC_FR_MI(BaseMultiview):
             V = la.svd(A_unfold2 @ (la.kron(W,U)),full_matrices=False)[0][:,:self.m]
             W = la.svd(A_unfold3 @ (la.kron(U,V)),full_matrices=False)[0][:,0].reshape(-1,1)
 
-            # print(la.norm(U-U_old))
             if la.norm(U-U_old) < 1e-12 :
                 break
-        print(la.norm(U-U_old))
         # Normalize rows of U
-        U = 1/ la.norm(U,axis=1).reshape(-1,1) * U 
+        U = U / la.norm(U,axis=0)#.reshape(-1,1) 
         U = U [:,:self.m] # Truncate
-        print(f"norm : {la.norm(U)}")
 
         return U
     
@@ -81,7 +77,6 @@ class MC_FR_MI(BaseMultiview):
             eig_val,eig_vec = la.eig(S) 
             U = eig_vec[:,np.argsort(eig_val)[::-1][:self.m]]  # Take m eigenvec corresponding to m biggest eigen values
             
-            # print(la.norm(U-U_old))
             if la.norm(U-U_old) < 1e-12 :
                 break
                 
