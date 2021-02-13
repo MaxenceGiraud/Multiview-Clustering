@@ -22,3 +22,9 @@ class SpectralClustering:
         y_hat = k.fit_predict(Xnew)
 
         return y_hat
+    
+    def __repr__(self):
+        return str(self.__class__.__name__)
+    
+    def __str__(self):
+        return self.__repr__()
