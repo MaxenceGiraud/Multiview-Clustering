@@ -1,7 +1,7 @@
 import tensorly as tl
 import scipy.linalg as la
 
-def MLSVD(A,truncated=False):
+def MLSVD(A,truncated=False,compute_core_tensor= True):
     ''' Multi-Linear Singular Value Decomposition
 
     Parameters
@@ -20,8 +20,15 @@ def MLSVD(A,truncated=False):
     if truncated is False :
         truncated = -1
 
+    ## Compute orthogonal matrices
     for o in range(len(A.shape)):
         unfolded = tl.unfold(A,o)
         U.append(la.svd(unfolded)[0][:,:truncated])
-    
-    return U
+
+    if compute_core_tensor : 
+        ## Compute core tensor
+        B = tl.tenalg.multi_mode_dot(A,U,modes=range(len(A.shape)),transpose=True)
+
+        return B,U
+    else : 
+        return U
